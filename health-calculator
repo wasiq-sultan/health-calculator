@@ -1,0 +1,81 @@
+def calculate_bmi(weight, height):
+    height_m = height / 100
+    return weight / (height_m ** 2)
+
+def bmi_category(bmi):
+    if bmi < 18.5:
+        return "Underweight"
+    elif 18.5 <= bmi < 24.9:
+        return "Normal weight"
+    elif 25 <= bmi < 29.9:
+        return "Overweight"
+    else:
+        return "Obese"
+
+def calculate_bmr(gender, weight, height, age):
+    if gender.lower() == "male":
+        return 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age)
+    else:  # female
+        return 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age)
+
+def get_activity_multiplier(level):
+    if level == 1:
+        return 1.2
+    elif level == 2:
+        return 1.375
+    elif level == 3:
+        return 1.55
+    elif level == 4:
+        return 1.725
+    elif level == 5:
+        return 1.9
+    else:
+        return 1.2
+
+def main():
+    print("---- Health Calculator ----")
+    
+    age = int(input("Enter your age: "))
+    gender = input("Enter your gender (male/female): ")
+    weight = float(input("Enter your weight (kg): "))
+    height = float(input("Enter your height (cm): "))
+
+    # BMI
+    bmi = calculate_bmi(weight, height)
+    category = bmi_category(bmi)
+
+    print(f"\nYour BMI is: {bmi:.2f}")
+    print(f"Your BMI Category: {category}")
+
+    # BMR
+    bmr = calculate_bmr(gender, weight, height, age)
+
+    # Activity level
+    print("\nChoose your activity level:")
+    print("1 - Little or no exercise")
+    print("2 - Light exercise (1–3 days/week)")
+    print("3 - Moderate exercise (3–5 days/week)")
+    print("4 - Heavy exercise (6–7 days/week)")
+    print("5 - Athlete (training twice a day)")
+    
+    activity = int(input("Enter 1-5: "))
+    multiplier = get_activity_multiplier(activity)
+
+    daily_calories_burned = bmr * multiplier
+    print(f"\nYou burn around {daily_calories_burned:.0f} calories per day.")
+
+    # Goal
+    goal = input("\nDo you want to gain or lose weight? ").lower()
+
+    if goal == "lose":
+        recommended_calories = daily_calories_burned - 500
+        print(f"To lose weight, you should eat about {recommended_calories:.0f} calories per day.")
+    elif goal == "gain":
+        recommended_calories = daily_calories_burned + 500
+        print(f"To gain weight, you should eat about {recommended_calories:.0f} calories per day.")
+    else:
+        print("Invalid goal. Please enter 'gain' or 'lose'.")
+
+    print("\nThank you for using the Health Calculator!")
+
+main()
